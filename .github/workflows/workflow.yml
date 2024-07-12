@@ -1,0 +1,17 @@
+name: ci workflow 
+on : 
+    push:
+        branches: 
+        - master
+        - 'feature/*'
+
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: read the file
+              run: cat README.md
+            - name: list files
+              run: ls -la
