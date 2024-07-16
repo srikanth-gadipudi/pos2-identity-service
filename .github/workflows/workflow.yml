@@ -2,7 +2,7 @@ name: ci workflow
 on : 
     push:
         branches: 
-        - master
+        - main
         - 'feature/*'
     
     workflow_dispatch:
@@ -17,3 +17,12 @@ jobs:
               run: cat README.md
             - name: list files
               run: ls -la
+            - name: install cowsay library
+              run: sudo apt-get install cowsay -y 
+
+            - name: generate tux messages text file with cowsay
+              run: cowsay -f tux "Hellow world" > dragon.txt
+
+            - name: read dragon.txt file
+              run: cat dragon.txt
+
