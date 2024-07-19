@@ -1,28 +1,44 @@
-name: ci workflow 
-on : 
-    push:
-        branches: 
-        - main
-        - 'feature/*'
-    
-    workflow_dispatch:
-
-
+name: ci workflow
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  workflow_dispatch: null
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: read the file
-              run: cat README.md
-            - name: list files
-              run: ls -la
-            - name: install cowsay library
-              run: sudo apt-get install cowsay -y 
-
-            - name: generate tux messages text file with cowsay
-              run: cowsay -f tux "Hellow world" > dragon.txt
-
-            - name: read dragon.txt file
-              run: cat dragon.txt
-
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: read the file
+        run: cat README.md
+      - name: list files
+        run: ls -la
+      - name: install cowsay library
+        run: sudo apt-get install cowsay -y
+      - name: generate tux messages text file with cowsay
+        run: cowsay -f tux "Hellow world" > dragon.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: dragon.txt
+  test-job:
+    runs-on: ubuntu-latest
+    needs: build-job
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+      - name: check for the file
+        run: grep -i "dragon" dragon.txt
+      - name: list all the files
+        run: ls - lart
+  deloy-job:
+    runs-on: ubuntu-latest
+    needs: build-job
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+      - name: show the content of the file
+        run: cat dragon.txt
