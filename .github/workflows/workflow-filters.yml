@@ -1,12 +1,14 @@
 name: testing workflow filters
 on:
     push:
-        branches: [ master ]
+        branches:
+            - main
     pull_request:
-        branches: [ master]
-        types: 
-        - opened
-        - closed
+        branches:
+            - main
+        types:
+            - opened
+            - closed
         paths-ignore:
             - 'README.md'
             - '.github\**'
